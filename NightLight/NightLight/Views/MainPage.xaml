@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="NightLight.Views.MainPage"
+             xmlns:viewModels="clr-namespace:NightLight.ViewModels">
+
+    <ContentPage.BindingContext>
+        <viewModels:MainViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <ScrollView>
+            <StackLayout>
+                <!-- Power switch. -->
+                <Label Text="Turn on/off"/>
+                <Switch IsToggled="{Binding IsActive}" HorizontalOptions="Start"/>
+                <!-- Notification mode selector. -->
+                <Label Text="Notification mode"/>
+                <Picker
+                    ItemsSource="{Binding NotificationModes}"
+                    SelectedItem="{Binding NotificationMode}"/>
+                <!-- Colour temperature. -->
+                <Label Text="Colour temperature"/>
+                <Entry Text="{Binding ColourTemperature}"/>
+                <Slider
+                    Value="{Binding ColourTemperature}"
+                    Maximum="6500"
+                    Minimum="1000"/>
+                <!-- RGB refinement controls. -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Entry
+                        Text="{Binding Red}"
+                        MaxLength="3"
+                        Keyboard="Numeric"
+                        TextChanged="ByteEntry_TextChanged"
+                        TextColor="Red"
+                        Grid.Column="0"/>
+                    <Entry
+                        Text="{Binding Green}"
+                        MaxLength="3"
+                        Keyboard="Numeric"
+                        TextChanged="ByteEntry_TextChanged"
+                        TextColor="Green"
+                        Grid.Column="1"/>
+                    <Entry
+                        Text="{Binding Blue}"
+                        MaxLength="3"
+                        Keyboard="Numeric"
+                        TextChanged="ByteEntry_TextChanged"
+                        TextColor="Blue"
+                        Grid.Column="2"/>
+                </Grid>
+                <!-- Intensity. -->
+                <Label Text="Intensity"/>
+                <Entry
+                    Text="{Binding Intensity}"
+                    MaxLength="3"
+                    Keyboard="Numeric"
+                    TextChanged="PercentEntry_TextChanged"/>
+                <Slider
+                    Value="{Binding Intensity}"
+                    Maximum="100"
+                    Minimum="0"/>
+                <!-- Start and end time. -->
+                <TimePicker
+                    Time="{Binding StartTime}"
+                    Format="HH:mm"/>
+                <Label Text="End time"/>
+                <TimePicker
+                    Time="{Binding EndTime}"
+                    Format="HH:mm"/>
+            </StackLayout>
+        </ScrollView>
+        <!-- Settings handler buttons that are always visible. -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button
+                Text="Save"
+                Command="{Binding SaveChangesCommand}"
+                Grid.Column="0"/>
+            <Button
+                Text="Undo changes"
+                Command="{Binding UndoChangesCommand}"
+                Grid.Column="1"/>
+        </Grid>
+    </Grid>
+</ContentPage>
